@@ -1,20 +1,10 @@
+# -*- coding: utf-8 -*-
+# this file is being used for testing puropses
 
-import shelve
+!text = 'Выводим кириллицу в консоль. С трудом, ё! К сожалению, в терминале не всё корректно отображается.'
+print(text)
 
 
-s = shelve.open('deeznuts')
-try:
-    s['clid']=0
-finally:
-    s.close()
-
-s = shelve.open('deeznuts.db')
-try:
-    fuck = s['clid']
-finally:
-    s.close()
-
-print(fuck)
 
 
 
