@@ -35,7 +35,11 @@ def send_welcome(message):
 # INSERT INTO STATUS (client,status) \
 #      VALUES (chat.id, x)
 
+@bot.message_handler(commands=['unicode'])
+def register(message):
+  bot.send_message(message.chat.id, "Zdarova! Попробую объясниться на русском языке.")
 
+  
 
 @bot.message_handler(commands=['register'])
 def register(message):
