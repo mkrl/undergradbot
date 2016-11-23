@@ -11,7 +11,7 @@ from telebot import types
 import random
 from csvtools import CsvLessons
 
-CSV_FILES = ['csv/autumn_2016-2017_2_fix.csv']
+CSV_FILES = ['csv/autumn_2016-2017_2_fix.csv', '2.csv']
 bot = telebot.TeleBot(cfg.token)
 
 
