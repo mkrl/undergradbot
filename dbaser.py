@@ -75,7 +75,7 @@ def upload_schedule( lesson, lessid):
     return False
 
 def upload_lessons( lessons):
-    print('Заливаем в базу занятия и расписания ...')
+    print('Uploading lessons and schedules ...')
     count_lessons = 0
     count_schedules = 0
     lesson_inserted = False
@@ -85,35 +85,35 @@ def upload_lessons( lessons):
         if iid > -1:
             if upload_schedule(lesson, iid):
                 count_schedules += 1
-    print('Добавлено в базу %d занятий' % count_lessons)
-    print('Добавлено в базу %d расписаний' % count_schedules)
+    print('%d lessons added to the db' % count_lessons)
+    print('%d schedules added to the db' % count_schedules)
 
 def upload_weeks(week_top_dates, week_bottom_dates):
     cur.execute('delete from weeks;')
     cur.connection.commit()
 
     sql_insert = 'INSERT INTO weeks(id, day, month) VALUES(%d, %d, %d)'
-    print('Заливаем недели...')
-    print('Заливаем числитель...')
+    print('Uploading weeks...')
+    print('Uploading numerator...')
     c = 0
     for d in week_top_dates:
         cur.execute(sql_insert % ( csvtools.WEEK_TOP, d.day, d.month))
         cur.connection.commit()
         c += 1
-    print('Сохранено %d недель по числителю' % c)
-    print('Заливаем знаменатель...')
+    print('Saved %d weeks by numerator' % c)
+    print('Uploading denominator...')
     c = 0
     for d in week_bottom_dates:
         cur.execute(sql_insert % (csvtools.WEEK_BOTTOM, d.day, d.month))
         cur.connection.commit()
         c += 1
-    print('Сохранено %d недель по знаменатею' % c)
+    print('Saved %d weeks by denominator' % c)
 
 def get_schedules_by_group(group=None, professor=None):
     rows =[]
     import datetime
     week_first_day = csvtools.get_date_first_week_day(datetime.datetime.now()+datetime.timedelta(hours=OFFSET_HOUR))
-    print('Получаем расписание на сегодня (%s) для группы %s ...' % (
+    print('Getting todays schedule (%s) for group %s ...' % (
         datetime.datetime.now() + datetime.timedelta(hours=OFFSET_HOUR), group))
     sql = """
     SELECT schedule.stime, schedule.room, lessons.lessname, lessons.teachname, schedule.etime
@@ -132,5 +132,5 @@ def get_schedules_by_group(group=None, professor=None):
     print(sql)
     cur.execute(sql)
     rows = cur.fetchall()
-    print('Получено %d занятий.' % len(rows))
+    print('Got %d lessons.' % len(rows))
     return rows

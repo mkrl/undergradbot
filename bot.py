@@ -29,11 +29,6 @@ def send_welcome(message):
 def send_welcome(message):
     bot.send_message(message.chat.id, "Привет! Я ИМЭИбот, могу показать ваше расписание, помочь в поиске преподавателя и кое-что ещё. \n Команды: \n \n */help* - показывает это сообщение \n */register* - Выслушаю номер вашей группы \n */today* - Расписание на сегодня, время до начала занятий. \n */getteacher* - Поиск преподавателя \n */news* - Новости ИГУ \n */fact* - случайный математический факт", parse_mode="Markdown")
     
-@bot.message_handler(commands=['unicode'])
-def register(message):
-	bot.send_message(message.chat.id, "Zdarova! Попробую объясниться на русском языке.") 
-
- 
 
 @bot.message_handler(commands=['register']) 
 def register(message):
@@ -52,7 +47,7 @@ def handle_message(message):
     gs = shelve.open(glocal)
     group = message.text
     gs[str(message.chat.id)] = group
-    bot.send_message(message.chat.id, "Group updated successfully. Yours is "+group)
+    bot.send_message(message.chat.id, "Группа успешно обновлена, ваша - "+group)
     gs.close()
   s[str(message.chat.id)] = 2 
   pens =  s[str(message.chat.id)]
@@ -75,25 +70,15 @@ def give_today(message):
 		# rows = dbaser.cur.fetchall()
 		rows = dbaser.get_schedules_by_group(grp)
 		for row in rows:
-			temp = tools.tohrs(row[0]) + " *"+str(row[2])+"*" + "\n Room no. " + str(row[1]) + "\n" + str(row[3]) + "\n"
+			temp = tools.tohrs(row[0]) + " *"+str(row[2])+"*" + "\n Кабинет " + str(row[1]) + "\n" + str(row[3]) + "\n"
 			text = text + temp
 		text+=tools.get_new_lesson(rows)
-
-		# buttons
-		# markup = types.ReplyKeyboardMarkup()
-		# markup.row('/today')
-		# bot.send_message(message.chat.id, text, reply_markup=markup)
 		print(text)
 		bot.send_message(message.chat.id, text, parse_mode="Markdown")
 		gs.close()
 
 @bot.message_handler(commands=['news'])
 def btns(message):
-	# markup = types.ReplyKeyboardMarkup(row_width=1)
-	# itembtn1 = types.KeyboardButton('Ещё новости')
-	# itembtn2 = types.KeyboardButton('Подробнее')
-	# markup.add(itembtn1, itembtn2)
-	# tb.send_message(chat_id, "Parsing lastest ISU news...", reply_markup=markup)
 	bot.send_message(message.chat.id, "Парсим последние новости ИГУ...") 
 	d = feedparser.parse('http://feed.exileed.com/vk/feed/irkutskuniversity/?only_admin=1&at=1')
 	msg=''
@@ -111,7 +96,7 @@ def facts(message):
 
 @bot.message_handler(commands=['getteacher'])
 def give_getteacher(message):
-	bot.send_message(message.chat.id,"Введите фамилию преподавателя")
+	bot.send_message(message.chat.id,"Введите фамилию / имя преподавателя")
 	s = shelve.open(slocal)
 	s[str(message.chat.id)] = 'getteacher'
 	s.close()
@@ -121,10 +106,10 @@ def handle_message(message):
 	s = shelve.open(slocal)
 	if s[str(message.chat.id)] == 'getteacher':
 		professor = message.text
-		print('Ищем препода "%s"...' % professor)
+		print('Ищем преподавателя "%s"...' % professor)
 		rows = dbaser.get_schedules_by_group(professor=professor)
 		text = tools.get_current_position_professor(rows)
-		if text.strip()=='' : text = 'Преподватель не найден'
+		if text.strip()=='' : text = 'Преподаватель не найден. Возможно, попробовать сформулировать запрос по-другому?'
 		print(text)
 		bot.send_message(message.chat.id, text, parse_mode="Markdown")
 

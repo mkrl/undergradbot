@@ -5,7 +5,7 @@ import os
 import datetime
 import tools
 
-CSV_FILES = ['csv/autumn_2016-2017_2_fix.csv']
+CSV_FILES = ['csv/autumn_2016-2017_2_fix.csv'] #can parse multiple files
 DAYS = ['ПОНЕДЕЛЬНИК', 'ВТОРНИК', 'СРЕДА', 'ЧЕТВЕРГ', 'ПЯТНИЦА', 'СУББОТА', 'ВОСКРЕСЕНЬЕ']
 WEEK_TOP = 1
 WEEK_BOTTOM = 2

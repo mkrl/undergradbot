@@ -20,6 +20,8 @@ A test python Telegram bot working via pyTelegramBotAPI.
 
 * pyTelegramBotAPI
 * feedparser
+* pytest
+
 
 
 ## Чейнджлог
